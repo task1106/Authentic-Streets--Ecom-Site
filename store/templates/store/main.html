@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<meta charset="UTF-8">
+	{% if not request.path == '/cart/' and not request.path == '/checkout/' and not request.path == '/dashboard/' %}
+	<title>Authentic Streets | Ecommerce</title>
+	{% endif %}
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script type="text/javascript">
+		var user = '{{request.user}}'
+
+		function getToken(name) {
+		    var cookieValue = null;
+		    if (document.cookie && document.cookie !== '') {
+		        var cookies = document.cookie.split(';');
+		        for (var i = 0; i < cookies.length; i++) {
+		            var cookie = cookies[i].trim();
+		            // Does this cookie string begin with the name we want?
+		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                break;
+		            }
+		        }
+		    }
+		    return cookieValue;
+		}
+		var csrftoken = getToken('csrftoken')
+
+		function getCookie(name) {
+		    // Split cookie string and get all individual name=value pairs in an array
+		    var cookieArr = document.cookie.split(";");
+
+		    // Loop through the array elements
+		    for(var i = 0; i < cookieArr.length; i++) {
+		        var cookiePair = cookieArr[i].split("=");
+
+		        /* Removing whitespace at the beginning of the cookie name
+		        and compare it with the given string */
+		        if(name == cookiePair[0].trim()) {
+		            // Decode the cookie value and return
+		            return decodeURIComponent(cookiePair[1]);
+		        }
+		    }
+
+		    // Return null if not found
+		    return null;
+		}
+		var cart = JSON.parse(getCookie('cart'))
+
+		if (cart == undefined){
+			cart = {}
+			console.log('Cart Created!', cart)
+			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+		}
+		console.log('Cart:', cart)
+	
+	</script>
+
+</head>
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" href="{% url 'store' %}"><img src="{% static 'images/logo.png' %}" class="logo" alt="Logo" style="height: 40px; margin-right: 8px;"><i style="font-weight:bold;">Authentic Streets</i></img></a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <ul class="navbar-nav mr-auto">
+	      
+	 
+	    </ul>
+	    <div class="form-inline my-2 my-lg-0">
+			<a href="{% url 'login' %}">
+			{% if user.is_authenticated %}
+			<span class="navbar-text text-white mr-3">
+				<h4 style="color:white;">Welcome, {{ user.username }}!</h4>
+			</span>
+			<div>
+				<a class="btn btn-warning"  href="{% url 'dashboard' %}">Dashboard</a>
+			</div>
+			<div>	
+				<a class="btn btn-warning" style="margin-left:10px;" href="{% url 'logout' %}">Logout</a>
+			</div>
+				{% else %}
+                    <a href="{% url 'login' %}"><i class="fa-solid fa-user" style="color: #fff; height:50px; width:50px; position:relative; top:15px; left:15px;" ></i></a>
+                    
+				{% endif %}
+			<a href="{% url 'cart' %}">
+	    		<img  id="cart-icon" src="{% static 'images/cart.png' %}">
+	    	</a>
+	    	<p id="cart-total">{{cartItems}}</p>
+
+	    </div>
+	  </div>
+	</nav>
+	{% block dashboard %}
+		{% endblock %}
+	{% if not request.path == '/cart/' and not request.path == '/checkout/' and not request.path == '/dashboard/' %}
+	<div class="container1 ">
+		{% block register %}
+		{% endblock %}
+		{% block login %}
+		{% endblock %}
+		
+		{% if not request.path == '/register/' and not request.path == '/login/' and not request.path == '/dashboard/' %}
+		<div class="col-2">
+			<h1>Give Your Workout<br>A New Style!</h1>
+			<p>Success isn't always about greatness.<br>It's about 
+				consistency. Consistent hard work <br>gains success.<br>Greatness will come.
+			</p>
+			<a href="#featured-products" class="btn-btn">Explore Now &#8594;</a>
+			</div>
+		<div class="col-2">
+			<img src="images/image1.png" class="img-fluid">
+		</div>
+	</div>
+	</div>
+	<center><h2 class="featured-products" id="featured-products">Featured Products</h2></center>
+	{%endif%} 
+	{%endif%} 
+	<div class="container">
+            <br>
+            {% block content %}
+
+
+            {% endblock content %}
+         </div>
+		 {% if not request.path == '/dashboard/' and not request.path == '/login/' %}
+		 <div class="testimonials">
+			<div class="testimonial">
+				<img src="{% static 'images/user-1.png' %}" class="testimonial-image">
+				<p class="author">"Co-Founder"</p>
+				<p class="author">- Ganesh Kshirsagar</p>
+			</div>
+			<div class="testimonial">
+				<img src="{% static 'images/user-2.png' %}" class="testimonial-image">
+				<p class="author">"Owner"</p>
+				<p class="author">- Anjali Sarthak</p>
+			</div>
+			<div class="testimonial">
+				<img src="{% static 'images/user-3.png' %}" class="testimonial-image">
+				<p class="author">"Developer"</p>
+				<p class="author">- Shubham Kuchankar</p>
+			</div>
+		</div>
+		 <!-- Brands -->
+		 <div class="navbar-dark bg-dark" style="margin:10px;">
+			<div class="small-container">
+				<div class="brand-row">
+					<div class="brand">
+						<img src="{% static 'images/logo-paypal.png' %}" alt="PayPal">
+					</div>
+					<div class="brand">
+						<img src="{% static 'images/logo-oppo.png' %}" alt="Oppo">
+					</div>
+					<div class="brand">
+						<img src="{% static 'images/logo-coca-cola.png' %}" alt="Coca-Cola">
+					</div>
+					<div class="brand">
+						<img src="{% static 'images/logo-godrej.png' %}" alt="Godrej">
+					</div>
+				</div>
+			</div>
+		</div>
+		{%endif%}
+<!--Footer-->
+{% if not request.path == '/register/' and not request.path == '/dashboard/' %}
+</div>
+<p class="navbar navbar-expand-lg navbar-dark bg-dark" style="color:white;justify-content:center;margin:10px;">Copyright  &#169;2024 -TASK</p>
+</div>
+{% endif %}
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+</body>
+</html>

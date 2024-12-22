@@ -1,0 +1,480 @@
+{% extends 'store/main.html' %}
+{% block dashboard %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>User Dashboard</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .customer-info {
+            margin-top: 20px;
+            margin:10px auto;
+            width:700px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .order-list {
+            margin:10px auto;
+            width:700px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 15px;
+            
+        }
+        .order-list .img{
+            margin-left:250px;
+            width: 280px;
+            height: 150px;
+
+        }
+        .settings {
+            
+            margin:10px auto;
+            width:570px;
+            height:375px;
+            background-color: #f9f9f9;
+            border-radius: 15px;          
+        }
+        
+        .order-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .order-item h5 {
+            margin: 0;
+        }
+        
+        .order-item p {
+            margin: 0px 0;
+            font-size:15px;
+        }
+        
+        .order-item ul {
+            padding-left: 20px;
+        }
+        .container3{
+            over-flow:hidden;
+            postion:relative;
+            margin-left:-28px;
+            width:auto;
+            height:134px;
+            background: radial-gradient(#fff,#f4baba);
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top:10px;
+        }
+       .dbname{
+        color:black;
+        width:350px;
+       }
+
+       .order-item img {
+        margin-left: 200px;
+        margin-top:-100px;      
+        width: 150px; /* Adjust the width as needed */
+        height: 80px; /* Adjust the height as needed */
+        border-radius: 15px; /* Optional: adds rounded corners */
+    }      
+    .btndiv {
+        display: flex;
+        flex-direction: row; /* Arrange buttons in a column */
+        align-items: center; /* Center the buttons horizontally */
+        gap: 40px; /* Add a gap between buttons */
+        
+       
+    }
+    
+    .btn-btn {
+        width: 40%; /* Make buttons full width */
+        padding: 12px 20px; /* Add some padding for a better look */
+        font-size: 20px; /* Increase font size for better readability */
+        font-weight: bold; /* Make the text bold */
+        border: none; /* Remove the default border */
+        border-radius: 10px; /* Add a rounded corner effect */
+        display: inline-block;
+        background: #ff523b;
+        color: #fff;
+
+        cursor: pointer; /* Change the cursor to a pointer on hover */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-btn:hover {
+            color: white;
+            background: #563434;
+            text-decoration: none; 
+    }
+
+    form {
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width:569px;
+        line-height:25px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: 90%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color:#ff523b;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        width: 90%;
+    }
+
+    button:hover {
+        background-color: #4cae4c;
+    }
+    .eye-icon {
+        position: relative;
+        left: -40px;
+        cursor: pointer;
+        color: #888; /* Color of the eye icon */
+        transition: color 0.3s;
+    }
+
+    .eye-icon:hover {
+        color: #333; /* Darker color on hover */
+    }
+    /* Media Queries for Responsiveness */
+    @media (max-width: 868px) {
+        
+        * {
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+        .container3 {
+            postion:absolute;
+            width: 95%;
+            height:auto;
+            justify-content:center;
+            margin:10px auto;
+        }
+        .dbname{
+            font-size: 14px;
+            margin:0 auto;
+            padding: 1px 7px 10px 10px;
+            margin-top:10px;
+        }        
+        .btndiv {
+            margin:auto;
+            margin-top:-50px;
+            flex-direction: column; 
+            align-items: center; 
+            display: flex;
+            postion:relative;
+            justify-content: center; 
+            flex-wrap: wrap;
+            height:300px;
+            padding-right:10px;    
+            gap:10px;       
+            padding: 1px;
+            
+        }
+        .btn-btn {
+            display: inline-block;
+            background: #ff523b;
+            color: #fff;
+            margin: 1px 0 0 0; /* Add vertical margin */
+            width: 50%; 
+            font-size: 16px; /* Decrease the font size */
+            font-weight: bold;
+            border-radius: 30px;
+            transition: background 0.3s;
+            cursor: pointer;	
+            padding:8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 0;
+            margin-top:-5px;
+        }
+        .btn-btn:hover{
+            color: white;
+            background: #563434;
+            text-decoration: none; 
+        }
+        .customer-info{
+            position:relative;
+            top: -50px;
+            margin:0 auto;
+            width: 338px; /* Allow it to be full width on smaller screens */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: add some shadow for better visibility */
+            border-radius: 5px; /* Optional: rounded corners */
+            background-color: #f9f9f9; /* Optional: background color */
+        }
+        .customer-info p{
+            margin: 0 auto;
+            font-size:15px;
+        }
+
+        .orders mt-4{
+            margin-top: 1rem;
+            width:310px;
+        }
+        .order-item {
+            padding: 0.25rem; /* Even less padding on very small screens */
+            margin-bottom: 0.25rem; /* Less space below each item */
+            font-size: 0.9rem; 
+            width:320px;
+            height:100%;
+        }
+        .order-list .img{
+            right:5;
+            width:100px;
+            height: auto;
+            margin:10px auto;
+
+        }
+        .order-list {
+            margin:auto;
+            width:354px;
+            
+            padding: 15px;
+            border-radius: 15px;
+            
+        }
+        .settings {
+            margin-top: -80px;
+            margin-left:30px;
+            width:280px;
+            height:305px;
+            background-color: #555;
+            border-radius: 15px;          
+        }
+        form {
+            background: white;
+            margin: 0 auto;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width:300px;
+            line-height:10px;
+
+        }    
+    }
+</style>
+</head>
+<body>
+    <div class="container3">  
+        <center><h2 class="dbname">Welcome, {{ user.username }}</h2></center>
+        <div class="btndiv">
+        <button class="btn-btn" id="view-profile-button">Your Profile</button>
+        <button class="btn-btn" id="view-orders-button">Your Orders</button>
+        <button class="btn-btn" id="view-settings-button">Account Settings</button>
+        </div>
+        {% load static %}
+        {% if customer %}
+        <div class="customer-info" id="profile-section" style="display: none;">
+            <h4>Your Profile</h4><hr>
+            {% if customer %}
+                <p>Name: {{ customer.name }}</p>
+                <p>Email: {{ customer.email }}</p>
+                <p>Mobile: {{ customer.mobile }}</p>
+                <p>Address: {{ customer.address }}, {{ customer.city }}, {{ customer.state }}, {{ customer.zipcode }}</p>
+            {% else %}
+                <p>No customer profile found.</p>
+            {% endif %}<hr>
+        </div>
+        <div class="orders mt-4" id="orders-section" style="display: none;">{% endif %}
+    {% if orders %}
+        <div class="order-list">
+            <h4>Your Orders</h4>
+            {% for order_info in orders %}
+                <div class="order-item border rounded p-3 mb-3">
+                    <hr>
+                    <h5>Order ID: {{ order_info.order.id }}</h5>
+                    <p>Payment Status: <p style="color:red;">{{ order_info.order.complete|yesno:"Completed,Pending" }}</p></p>
+                    <p>Transaction ID: {{ order_info.order.transaction_id }}</p>
+                    <h6>Items:</h6>
+                    <ul>
+                        {% for item in order_info.items %}
+                            <li>{{ item.product.name }}<br>Quantity: {{ item.quantity }} <br><img class="img" src="{{ item.product.imageURL }}"></li>
+                        {% endfor %}
+                    </ul>
+                    <p>Total: ₹{{ order_info.order.get_cart_total }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You have no orders yet.</p>
+    {% endif %}
+</div>
+<div class="settings" id="settings-section" style="display: none;">
+    <form method="POST" action="">
+        {% csrf_token %}
+        <h4>Your Settings</h4>
+        {% if messages.error %}
+        <div class="messages.error" style="color: red;">
+            {{ messages.error }}
+        </div>
+    {% endif %}
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{ user.username }}" readonly>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}" readonly>
+        </div>
+        <div class="password-field">
+            <label for="old_password">Old Password:</label>
+            <input type="password" id="old_password" name="old_password" required>
+            <span class="eye-icon" onclick="togglePasswordVisibility('old_password')">
+                <i class="fa fa-eye" id="eye-icon-old_password"></i>
+            </span>
+        </div>
+        <div>
+            <label for="new_password">New Password:</label>
+            <input type="password" id="new_password" name="new_password" required>
+            <span class="eye-icon" onclick="togglePasswordVisibility('new_password')">
+                <i class="fa fa-eye" id="eye-icon-new_password"></i>
+            </span>
+            <span class="password-restrictions"></span>
+        </div>
+        <div>
+            <label for="confirm_password">Confirm New Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+        </div>
+        <div id="message" style="color: red;"></div> <br>
+        <button type="submit">Change Password</button>
+    </form>
+</div>
+</body>
+<script>
+   
+    // Toggle profile section
+    document.getElementById('view-profile-button').onclick = function() {
+        var profileSection = document.getElementById('profile-section');
+        if (profileSection.style.display === "none") {
+            profileSection.style.display = "block";
+        } else {
+            profileSection.style.display = "none";
+        }
+    };
+
+    // Toggle orders section
+    document.getElementById('view-orders-button').onclick = function() {
+        var ordersSection = document.getElementById('orders-section');
+        if (ordersSection.style.display === "none") {
+            ordersSection.style.display = "block";
+        } else {
+            ordersSection.style.display = "none";
+        }
+    };
+    // Toggle settings section
+    document.getElementById('view-settings-button').onclick = function() {
+        var settingsSection = document.getElementById('settings-section');
+        if (settingsSection.style.display === "none") {
+            settingsSection.style.display = "block";
+        } else {
+            settingsSection.style.display = "none";
+        }
+    };
+    // Get all sections
+var sections = document.querySelectorAll('.customer-info, .orders, .settings');
+
+// Add event listeners to buttons
+document.getElementById('view-profile-button').addEventListener('click', function() {
+    toggleSection('profile-section');
+});
+
+document.getElementById('view-orders-button').addEventListener('click', function() {
+    toggleSection('orders-section');
+});
+
+document.getElementById('view-settings-button').addEventListener('click', function() {
+    toggleSection('settings-section');
+});
+
+// Function to toggle a section and close others
+function toggleSection(sectionId) {
+    // Close all sections
+    sections.forEach(function(section) {
+        section.style.display = 'none';
+    });
+
+    // Open the selected section
+    var selectedSection = document.getElementById(sectionId);
+    selectedSection.style.display = 'block';
+}
+document.querySelector('input[name="new_password"]').addEventListener('input', function() {
+    var password = this.value;
+    var passwordRestrictions = document.querySelector('.password-restrictions');
+
+    // Check if the password is at least 8 characters long
+    if (password.length < 8) {
+        passwordRestrictions.textContent = 'Password must be at least 8 characters long';
+        passwordRestrictions.style.color = 'red';
+    }
+    // Check if the password contains at least one uppercase letter
+    else if (!/[A-Z]/.test(password)) {
+        passwordRestrictions.textContent = 'Password must contain at least one uppercase letter';
+        passwordRestrictions.style.color = 'red';
+    }
+    // Check if the password contains at least one lowercase letter
+    else if (!/[a-z]/.test(password)) {
+        passwordRestrictions.textContent = 'Password must contain at least one lowercase letter';
+        passwordRestrictions.style.color = 'red';
+    }
+    // Check if the password contains at least one number
+    else if (!/\d/.test(password)) {
+        passwordRestrictions.textContent = 'Password must contain at least one number';
+        passwordRestrictions.style.color = 'red';
+    }
+    // Check if the password contains at least one special character
+    else if (!/[^A-Za-z0-9]/.test(password)) {
+        passwordRestrictions.textContent = 'Password must contain at least one special character';
+        passwordRestrictions.style.color = 'red';
+    }
+    else {
+        passwordRestrictions.textContent = 'Password is valid';
+        passwordRestrictions.style.color = 'green';
+    }
+});
+function togglePasswordVisibility(passwordFieldId) {
+    var passwordField = document.getElementById(passwordFieldId);
+    var eyeIcon = document.getElementById('eye-icon-' + passwordFieldId);
+
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordField.type = "password";
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+    }
+}
+</script>
+</html>
+{% endblock %}

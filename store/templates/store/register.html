@@ -1,0 +1,201 @@
+{% extends 'store/main.html' %}
+{% block register %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+    .register-container {
+        max-width: 500px;
+        margin: auto;
+        margin-top:-20px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(2, 2, 2, 0.1);
+        background-color: #fff;
+    }
+    .register-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+    .register-container input {
+        width: 100%;
+        padding: 5px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .register-container button {
+        width: 100%;
+        padding: 8px;
+        background: #ff523b;
+        color: #fff;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: background 0.5s;
+    }
+    .register-container button:hover {
+        color: white;
+        background: #563434;
+	    text-decoration: none; 
+    }
+    .register-container .login-link {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+    }
+    .alert {
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+    }
+    .alert.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+    .alert.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    .register-container select {
+        width: 100%;
+        padding: 5px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .password-restrictions {
+        font-size: 12px;
+        font-weight: bold;
+        margin-top: 5px;
+    }
+    .mobile-restrictions {
+        font-size: 12px;
+        margin-top: 5px;
+        font-weight: bold;
+    }
+    .eye-icon {
+        position: relative;
+        left: 424px;
+        cursor: pointer;
+        color: #888; /* Color of the eye icon */
+        transition: color 0.3s;
+        top:-37px;
+    }
+
+    .eye-icon:hover {
+        color: #333; /* Darker color on hover */
+    }
+</style>
+
+<div class="register-container">
+    <h2>Create an Account</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Full Name" required>
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" id="password" placeholder="Password" required>
+    <span class="eye-icon" onclick="togglePasswordVisibility('password')">
+        <i class="fa fa-eye" id="eye-icon-password"></i></span>
+        </span><span class="password-restrictions"></span>
+        <input type="text" name="mobile" placeholder="Mobile Number" required>
+        <span class="mobile-restrictions"></span>
+        <input type="text" name="address" placeholder="Address" required>
+        <select name="state" required>
+            <option value="">State..</option>
+            {% for state in states %}
+              <option value="{{ state.name }}">{{ state.name }}</option>
+            {% endfor %}
+          </select>
+        <input type="text" name="city" placeholder="City" required>  
+        <input type="text" name="zipcode" placeholder="Zip Code" required>
+        <button type="submit">Register</button>
+    </form>
+    <a href="{%url 'login'%}" class="login-link">Already have an account? Login here</a>
+</div>
+<script>
+    function togglePasswordVisibility(passwordFieldId) {
+        var passwordField = document.getElementById(passwordFieldId);
+        var eyeIcon = document.getElementById('eye-icon-' + passwordFieldId);
+    
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = "password";
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    }
+
+    document.querySelector('input[name="password"]').addEventListener('input', function() {
+        var password = this.value;
+        var passwordRestrictions = document.querySelector('.password-restrictions');
+    
+        // Check if the password is at least 8 characters long
+        if (password.length < 8) {
+            passwordRestrictions.textContent = 'Password must be at least 8 characters long';
+            passwordRestrictions.style.color = 'red';
+        }
+        // Check if the password contains at least one uppercase letter
+        else if (!/[A-Z]/.test(password)) {
+            passwordRestrictions.textContent = 'Password must contain at least one uppercase letter';
+            passwordRestrictions.style.color = 'red';
+        }
+        // Check if the password contains at least one lowercase letter
+        else if (!/[a-z]/.test(password)) {
+            passwordRestrictions.textContent = 'Password must contain at least one lowercase letter';
+            passwordRestrictions.style.color = 'red';
+        }
+        // Check if the password contains at least one number
+        else if (!/\d/.test(password)) {
+            passwordRestrictions.textContent = 'Password must contain at least one number';
+            passwordRestrictions.style.color = 'red';
+        }
+        // Check if the password contains at least one special character
+        else if (!/[^A-Za-z0-9]/.test(password)) {
+            passwordRestrictions.textContent = 'Password must contain at least one special character';
+            passwordRestrictions.style.color = 'red';
+        }
+        else {
+            passwordRestrictions.textContent = 'Password is valid';
+            passwordRestrictions.style.color = 'green';
+        }
+    });
+    document.querySelector('input[name="mobile"]').addEventListener('input', function() {
+        var mobile = this.value;
+        var mobileRestrictions = document.querySelector('.mobile-restrictions');
+    
+        // Check if the mobile number is at least 10 characters long
+        if (mobile.length < 10) {
+            mobileRestrictions.textContent = 'Mobile number must be at least 10 digits long';
+            mobileRestrictions.style.color = 'red';
+        }
+        // Check if the mobile number contains only numbers
+        else if (!/^\d+$/.test(mobile)) {
+            mobileRestrictions.textContent = 'Mobile number must contain only numbers';
+            mobileRestrictions.style.color = 'red';
+        }
+        // Check if the mobile number starts with a valid country code (e.g. +91 for India)
+        else if (!/^(\+91|91|0)?\d{10}$/.test(mobile)) {
+            mobileRestrictions.textContent = 'Mobile number must start with a valid country code (e.g. +91 for India)';
+            mobileRestrictions.style.color = 'red';
+        }
+        else {
+            mobileRestrictions.textContent = 'Mobile number is valid';
+            mobileRestrictions.style.color = 'green';
+        }
+    });
+</script>
+{% endblock %}

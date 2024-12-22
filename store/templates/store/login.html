@@ -1,0 +1,125 @@
+{% extends 'store/main.html' %}
+
+{% block login %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+    .eye-icon {
+        position: relative;
+        left: 330px;
+        cursor: pointer;
+        color: #888; /* Color of the eye icon */
+        transition: color 0.3s;
+        top:-43px;
+    }
+
+    .eye-icon:hover {
+        color: #333; /* Darker color on hover */
+    }
+    .login-container {
+        max-width: 400px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+    .login-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+    .login-container input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .login-container button {
+        width: 100%;
+        padding: 10px;
+        background-color: #ff523b;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .login-container button:hover {
+        background-color:rgb(110, 236, 7);
+    }
+    .login-container .forgot-password {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+    }
+    .error-message {
+        color: red;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    /* Media queries for responsiveness */
+    @media (max-width: 600px) {
+        .login-container {
+            padding: 15px; /* Reduce padding on smaller screens */
+        }
+        .login-container h2 {
+            font-size: 1.5em; /* Adjust heading size */
+        }
+        .login-container input, .login-container button {
+            padding: 8px; /* Reduce padding on inputs and button */
+        }
+    }
+
+    @media (max-width: 400px) {
+        .login-container {
+            padding: 10px; /* Further reduce padding */
+        }
+        .login-container h2 {
+            font-size: 1.2em; /* Further adjust heading size */
+        }
+    }
+</style>
+
+<div class="login-container">
+    <h2>Login to Your Account</h2>
+    {% if error_message %}
+        <div class="error-message">{{ error_message }}</div>
+    {% endif %}
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="username" placeholder="Username or Email" required>
+    <input type="password" name="password" id="password" placeholder="Password" required>
+    <span class="eye-icon" onclick="togglePasswordVisibility('password')">
+        <i class="fa fa-eye" id="eye-icon-password"></i>
+    </span>
+    <button type="submit">Login</button>
+</form>
+<a href="{% url 'forgot_password' %}" class="forgot-password">Forgot Password?</a>
+<a href="{% url 'register' %}" class="create-account" style="display: block; text-align: center; margin-top: 10px;">Don't have an account? Sign up here.</a>
+</div>
+<script>
+    function togglePasswordVisibility(passwordFieldId) {
+        var passwordField = document.getElementById(passwordFieldId);
+        var eyeIcon = document.getElementById('eye-icon-' + passwordFieldId);
+    
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = "password";
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    }
+</script>
+{% endblock %}
